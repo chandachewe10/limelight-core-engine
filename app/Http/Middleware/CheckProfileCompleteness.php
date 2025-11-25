@@ -28,6 +28,12 @@ class CheckProfileCompleteness
             return $next($request);
         }
 
+        // Prioritize email verification - if email is not verified, let Filament handle that first
+        // Filament's email verification middleware will redirect if needed
+        if (!$user->hasVerifiedEmail()) {
+            return $next($request);
+        }
+
         // Check if profile is incomplete - redirect only if modal hasn't been shown (user hasn't clicked "Complete Later")
         if ($user->isProfileIncomplete() && !$user->profile_completion_modal_shown) {
             // Check if we're already on the profile completion page
@@ -53,6 +59,9 @@ class CheckProfileCompleteness
             'filament.admin.pages.profile-completion',
             'logout',
             'filament.admin.auth.logout',
+            'filament.admin.auth.email-verification.prompt',
+            'verification.notice',
+            'verification.verify',
         ];
 
         foreach ($allowedRoutes as $route) {
@@ -67,7 +76,9 @@ class CheckProfileCompleteness
             str_contains($path, 'admin/auth') ||
             str_contains($path, 'admin/api') ||
             str_contains($path, 'livewire/') ||
-            str_contains($path, 'admin/profile-completion')
+            str_contains($path, 'admin/profile-completion') ||
+            str_contains($path, 'email/verify') ||
+            str_contains($path, 'email-verification')
         ) {
             return true;
         }

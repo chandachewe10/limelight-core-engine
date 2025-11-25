@@ -1,0 +1,16 @@
+{
+    "name": "LIMELIGHT MONEYLINK SERVICES LIMITED",
+    "short_name": "LMS",
+    "background_color": "#32CD32",
+    "display": "fullscreen",
+    "description": "Loan Management System",
+    "theme_color": "#32CD32",
+    "start_url": "/",
+    "icons": [
+        {
+            "src": "logo.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
